@@ -1,35 +1,42 @@
-<h1>Listing testruns</h1>
-
-<table>
+<%- model_class = Testrun -%>
+<div class="page-header">
+  <h1><%=t '.title', :default => model_class.model_name.human.pluralize.titleize %></h1>
+</div>
+<table class="table table-striped">
   <thead>
     <tr>
-      <th>Status</th>
-      <th>Passed</th>
-      <th>Failed</th>
-      <th>Total</th>
-      <th></th>
-      <th></th>
-      <th></th>
+      <th><%= model_class.human_attribute_name(:id) %></th>
+      <th><%= model_class.human_attribute_name(:status) %></th>
+      <th><%= model_class.human_attribute_name(:passed) %></th>
+      <th><%= model_class.human_attribute_name(:failed) %></th>
+      <th><%= model_class.human_attribute_name(:total) %></th>
+      <th><%= model_class.human_attribute_name(:created_at) %></th>
+      <th><%=t '.actions', :default => t("helpers.actions") %></th>
     </tr>
   </thead>
-
   <tbody>
     <% @testruns.each do |testrun| %>
       <tr>
+        <td><%= link_to testrun.id, testrun_path(testrun) %></td>
         <td><%= testrun.status %></td>
         <td><%= testrun.passed %></td>
         <td><%= testrun.failed %></td>
         <td><%= testrun.total %></td>
-        <td><%= link_to 'Show', testrun %></td>
-        <td><%= link_to 'Edit', edit_testrun_path(testrun) %></td>
-        <td><%= link_to 'Destroy', testrun, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%=testrun.created_at.to_formatted_s(:short) %></td>
+        <td>
+          <%= link_to t('.edit', :default => t("helpers.links.edit")),
+                      edit_testrun_path(testrun), :class => 'btn btn-mini' %>
+          <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                      testrun_path(testrun),
+                      :method => :delete,
+                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                      :class => 'btn btn-mini btn-danger' %>
+        </td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
-<br>
-
-<%= link_to 'All pages Testrun', new_testrun_path(type: 'all') %>
-<%= link_to 'New pages Testrun', new_testrun_path(type: 'new') %>
-<%= link_to 'Redo Testrun for failed pages', new_testrun_path(type: 'failed') %>
+<%= link_to 'All pages Testrun', new_testrun_path(type: 'all'), :class => 'btn' %>
+<%= link_to 'New pages Testrun', new_testrun_path(type: 'new'), :class => 'btn' %>
+<%= link_to 'Redo Testrun for failed pages', new_testrun_path(type: 'failed'), :class => 'btn' %>

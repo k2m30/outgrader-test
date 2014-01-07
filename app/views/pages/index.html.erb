@@ -1,31 +1,32 @@
-<h1>Listing pages</h1>
-
-<table style="table-layout:fixed;">
+<%- model_class = Page -%>
+<div class="page-header">
+  <h1><%=t '.title', :default => model_class.model_name.human.pluralize.titleize %></h1>
+</div>
+<table class="table">
   <thead>
     <tr>
-      <th>Url</th>
-      <th>Status</th>
-      <th></th>
-      <th></th>
-      <th></th>
+      <th><%= model_class.human_attribute_name(:url) %></th>
+      <th><%= model_class.human_attribute_name(:status) %></th>
+      <th><%=t '.actions', :default => t("helpers.actions") %></th>
     </tr>
   </thead>
-
   <tbody>
     <% @pages.each do |page| %>
       <tr>
-        <td style="min-width: 300px; max-width: 600px; overflow: hidden; text-overflow: ellipsis;">
-          <%= link_to page.url, page.url %>
+        <td style="min-width: 300px; max-width: 600px; overflow: hidden; text-overflow: ellipsis;"><%= link_to page.url, page.url %></td>
+        <td class="span3"><%= page.status %></td>
+        <td class="span3">
+          <%= link_to t('.edit', :default => t("helpers.links.edit")),
+                      edit_page_path(page) %>
+          <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                      page_path(page),
+                      :method => :delete %>
         </td>
-        <td><%= page.status %></td>
-        <td><%= link_to 'Show', page %></td>
-        <td><%= link_to 'Edit', edit_page_path(page) %></td>
-        <td><%= link_to 'Destroy', page, method: :delete %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
-<br>
-
-<%= link_to 'New Page', new_page_path %>
+<%= link_to t('.new', :default => t("helpers.links.new")),
+            new_page_path,
+            :class => 'btn btn-primary' %>
