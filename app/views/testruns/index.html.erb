@@ -1,0 +1,35 @@
+<h1>Listing testruns</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Status</th>
+      <th>Passed</th>
+      <th>Failed</th>
+      <th>Total</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @testruns.each do |testrun| %>
+      <tr>
+        <td><%= testrun.status %></td>
+        <td><%= testrun.passed %></td>
+        <td><%= testrun.failed %></td>
+        <td><%= testrun.total %></td>
+        <td><%= link_to 'Show', testrun %></td>
+        <td><%= link_to 'Edit', edit_testrun_path(testrun) %></td>
+        <td><%= link_to 'Destroy', testrun, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'All pages Testrun', new_testrun_path(type: 'all') %>
+<%= link_to 'New pages Testrun', new_testrun_path(type: 'new') %>
+<%= link_to 'Redo Testrun for failed pages', new_testrun_path(type: 'failed') %>

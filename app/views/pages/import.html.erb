@@ -1,0 +1,7 @@
+<%= link_to 'All pages', pages_path %>
+<%= link_to 'Testruns', testruns_path %>
+
+<%= form_tag import_pages_path, multipart: true do %>
+  <%= file_field_tag "file" %>
+  <%= submit_tag %>
+<% end %>

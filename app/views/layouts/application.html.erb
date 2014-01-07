@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>OutgraderTest</title>
+  <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
+  <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+  <% flash.each do |name, msg| %>
+      <div class="alert alert-<%= name == :notice ? 'success' : 'error' %>">
+        <button type="button" class="close"
+                data-dismiss="alert">&times;</button> <%= msg %> </div>
+  <% end %>
+  <%= link_to 'All pages', pages_path(type: 'all') %>
+  <%= link_to 'Failed pages',  pages_path(type: 'failed') %>
+  <%= link_to 'Import pages', import_pages_path %>
+  
+  <%= link_to 'Testruns', testruns_path %>
+
+<%= yield %>
+
+</body>
+</html>

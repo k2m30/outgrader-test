@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Status:</strong>
+  <%= @testrun.status %>
+</p>
+
+<p>
+  <strong>Passed:</strong>
+  <%= @testrun.passed %>
+</p>
+
+<p>
+  <strong>Failed:</strong>
+  <%= @testrun.failed %>
+</p>
+
+<p>
+  <strong>Total:</strong>
+  <%= @testrun.total %>
+</p>
+
+<%= link_to 'Edit', edit_testrun_path(@testrun) %> |
+<%= link_to 'Back', testruns_path %>

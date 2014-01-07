@@ -1,0 +1,33 @@
+<%= form_for(@testrun) do |f| %>
+  <% if @testrun.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@testrun.errors.count, "error") %> prohibited this testrun from being saved:</h2>
+
+      <ul>
+      <% @testrun.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :status %><br>
+    <%= f.text_field :status %>
+  </div>
+  <div class="field">
+    <%= f.label :passed %><br>
+    <%= f.number_field :passed %>
+  </div>
+  <div class="field">
+    <%= f.label :failed %><br>
+    <%= f.number_field :failed %>
+  </div>
+  <div class="field">
+    <%= f.label :total %><br>
+    <%= f.number_field :total %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
