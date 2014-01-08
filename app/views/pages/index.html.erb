@@ -1,11 +1,13 @@
 <%- model_class = Page -%>
-<div class="page-header">
-  <h1><%=t '.title', :default => model_class.model_name.human.pluralize.titleize %></h1>
-</div>
+
 <table class="table">
   <thead>
     <tr>
-      <th><%= model_class.human_attribute_name(:url) %></th>
+      
+      <th>
+        <%= link_to "Download list", pages_path(type: params[:type],format: "csv") %>
+        <%= will_paginate @pages, :page_links => false %>      
+      </th>
       <th><%= model_class.human_attribute_name(:status) %></th>
       <th><%=t '.actions', :default => t("helpers.actions") %></th>
     </tr>
@@ -21,11 +23,15 @@
           <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
                       page_path(page),
                       :method => :delete %>
+                      <%= link_to 'Retest', new_testrun_path(type: 'single_page', id: page.id) %>
         </td>
       </tr>
     <% end %>
   </tbody>
 </table>
+
+<p>  <%= page_entries_info @pages %></p>
+<p><%= will_paginate @pages, :container => false %></p>
 
 <%= link_to t('.new', :default => t("helpers.links.new")),
             new_page_path,

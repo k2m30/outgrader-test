@@ -19,7 +19,11 @@ class TestrunsController < ApplicationController
   def new
     begin
       p 'start'
-      browser = Watir::Browser.new :chrome, :switches => %w['--proxy-server=93.125.42.249']
+      profile = Selenium::WebDriver::Firefox::Profile.new
+      profile.proxy = Selenium::WebDriver::Proxy.new :http => '93.125.42.249:8888', :ssl => '93.125.42.249:8888'
+      browser = Watir::Browser.new :firefox, :profile => profile
+
+      # browser = Watir::Browser.new :chrome, :switches => %w['--proxy-server=93.125.42.249']
       p 'browser is started'
       case params[:type]
       when 'all'
@@ -28,6 +32,9 @@ class TestrunsController < ApplicationController
         pages = Page.where(status: nil)
       when 'failed'
         pages = Page.where.not(status: 'succeed')
+      when 'single_page'
+        id = params[:id] || Page.first.id
+        pages = Page.where(id: id)
       else
         pages = Page.where(status: nil)
       end
@@ -41,25 +48,44 @@ class TestrunsController < ApplicationController
         begin
           p '----','going to visit ' + page.url
           browser.goto page.url
-          if browser.ready_state == 'complete'
-            #Returns "loading" while the document is loading, "interactive" once it is finished parsing but still loading sub-resources, and "complete" once it has loaded.
+
+#Returns "loading" while the document is loading, "interactive" once it is finished parsing but still loading sub-resources, and "complete" once it has loaded.
+          case browser.ready_state
+          when 'complete'
             passed+=1
             page.status = 'succeed'
-            page.save
-          else
+          when 'interactive'
+            failed+=1
+            sleep(2)
+            page.status = browser.ready_state == 'complete' ? 'succeed' : browser.ready_state
+          when 'loading'
             failed+=1
             page.status = browser.ready_state
-            page.save
+          else
+            failed+=1
+            page.status = 'other'
           end
+          page.save
+          # if browser.ready_state == 'complete'
+#             
+#             passed+=1
+#             page.status = 'succeed'
+#             page.save
+#           else
+#             failed+=1
+#             page.status = browser.ready_state
+#             page.save
+#           end
           p [passed+failed, 'visited ', page.url]
         rescue Exception => e
           failed+=1
-          p ['failde',e.inspect, page.url]
+          p ['failed',e.inspect, page.url]
           status = e.inspect
           status.length < 255 ? page.status = status : page.status = status[0..254]
           page.save
-          # browser.close
-          browser = Watir::Browser.new :chrome, :switches => %w['--proxy-server=93.125.42.249']
+          browser.close
+          # browser = Watir::Browser.new :chrome, :switches => %w['--proxy-server=93.125.42.249']
+          browser = Watir::Browser.new :firefox, :profile => profile
           p 'browser is started again'
         end
       end
@@ -74,12 +100,12 @@ class TestrunsController < ApplicationController
       browser.close
       p 'finish'
       redirect_to testruns_path, success: 'Testrun succesful'
-      # rescue Exception => e
+    rescue Exception => e
       testrun.passed = passed
       testrun.failed = failed
       testrun.status = 'failed'
       testrun.save
-      #       redirect_to testruns_path, alert: 'Testrun failed'
+      redirect_to testruns_path, alert: 'Testrun failed'
     end
 
   end

@@ -5,11 +5,6 @@ class PagesController < ApplicationController
   before_action :set_page, only: [:show, :edit, :update, :destroy]
 
   def import
-
-  end
-
-  def failed_to_visit_pages
-    @pages = Page.where.not(status: 'succeed').order(:url)
   end
 
   def upload
@@ -17,7 +12,7 @@ class PagesController < ApplicationController
       file = params[:file]
       xml = Nokogiri::XML open(file.path)
       set = xml.css('string')
-      set = set.select {|node| node.content.start_with?('http://') && !node.content.include?('localhost')}
+      set = set.select {|node| node.content.start_with?('http://') || node.content.start_with?('https://') && !node.content.include?('localhost')}
       set = set.map do |node|
         node.content = node.content.chomp('/')
         node.content
@@ -48,13 +43,17 @@ class PagesController < ApplicationController
   def index
     case params[:type]
     when 'all'
-      @pages = Page.all.order(:url)
+      pages = Page.all.order(:url)
     when 'failed'
-      @pages = Page.where.not(status: 'succeed').order(:url)
+      pages = Page.where.not(status: 'succeed').order(:url)
     else
-      @pages = Page.all.order(:url)
+      pages = Page.all.order(:url)
     end
-
+    @pages = pages.paginate(:page => params[:page], :per_page => 30)
+    respond_to do |format|
+      format.html
+      format.csv { send_data pages.to_csv }
+    end
   end
 
   # GET /pages/1
