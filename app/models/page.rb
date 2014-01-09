@@ -12,7 +12,7 @@ class Page < ActiveRecord::Base
 
   def html
     begin
-      logger.warn 'Environment ' + ENV['RAILS_ENV']
+      logger.warn ['Environment ', ENV['RAILS_ENV']]
       if ENV['RAILS_ENV'] == 'production'
         logger.warn 'Headless'
         headless = Headless.new
@@ -28,7 +28,7 @@ class Page < ActiveRecord::Base
       pages = Page.where(original_html: nil, status: 'succeed').order(:url).limit(2)
       pages.each do |page|
         begin
-          logger.warn ['----','going to visit ' + page.url]
+          logger.warn ['----','going to visit ', page.url]
           browser.goto page.url
           page.original_html = browser.html
           page.title = browser.title
