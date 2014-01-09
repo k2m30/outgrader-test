@@ -1,5 +1,6 @@
 require 'watir-webdriver-performance'
 require 'watir-webdriver'
+require 'headless'
 
 class TestrunsController < ApplicationController
   before_action :set_testrun, only: [:show, :edit, :update, :destroy]
@@ -16,35 +17,7 @@ class TestrunsController < ApplicationController
   end
 
   def create_original_html
-    begin
-      if ENV['RAILS_ENV'] == 'production'
-        logger.warn 'Headless started'
-        headless = Headless.new
-        headless.start
-      end
-      profile = Selenium::WebDriver::Firefox::Profile.new
-      browser = Watir::Browser.new :firefox
-
-      pages = Page.where(original_html: nil).order(:url).limit(10)
-
-      pages.each do |page|
-        begin
-          p '----','going to visit ' + page.url
-          browser.goto page.url
-          page.original_html = browser.html
-          page.title = browser.title
-          page.save
-        rescue Exception => e
-        end
-
-      end
-      browser.close
-      if ENV['RAILS_ENV'] == 'production'
-        headless.destroy
-        logger.warn 'Headless destroyed'
-      end
-    rescue Exception => e
-    end
+    Testrun.first.html
     redirect_to testruns_path
   end
   # GET /testruns/new
