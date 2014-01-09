@@ -18,7 +18,9 @@
         <td style="min-width: 300px; max-width: 600px; overflow: hidden; text-overflow: ellipsis;"><%= link_to page.url, page.url %></td>
         <td class="span3"><%= page.status %></td>
         <td class="span3">
-          <%= link_to 'Show original html', show_original_html_page_path(page) %>
+          <% if !page.original_html.nil? %>
+            <%= link_to 'Show original html', show_original_html_page_path(page) %>
+          <% end %>
           <%= link_to t('.edit', :default => t("helpers.links.edit")),
                       edit_page_path(page) %>
           <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
