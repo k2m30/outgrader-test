@@ -10,7 +10,7 @@ class Page < ActiveRecord::Base
     end
   end
 
-  def html
+  def self.html
     begin
       logger.warn ['Environment ', ENV['RAILS_ENV']]
       if ENV['RAILS_ENV'] == 'production'
@@ -42,8 +42,8 @@ class Page < ActiveRecord::Base
         headless.destroy
         logger.warn 'Headless destroyed'
       end
-    rescue Exception => e
-      logger.warn e.inspect
+    # rescue Exception => e
+#       logger.warn e.inspect
     end
   end
 
