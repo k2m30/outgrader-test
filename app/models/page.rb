@@ -27,7 +27,7 @@ class Page < ActiveRecord::Base
 
       logger.warn browser.inspect
 
-      pages = Page.where(original_html: nil, status: 'succeed').order(:url).limit(2)
+      pages = Page.where(original_html: nil).order(:url).limit(2)
       pages.each do |page|
         begin
           logger.warn ['----','going to visit ', page.url]
