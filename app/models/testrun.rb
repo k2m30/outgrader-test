@@ -26,7 +26,7 @@ class Testrun < ActiveRecord::Base
       pages_id.each do |id|
         begin
           page = Page.find_by_id(id)
-          logger.warn '----','going to visit ' + page.url
+          logger.warn ['----','going to visit ' + page.url]
           browser.goto page.url
 
           #Returns "loading" while the document is loading, "interactive" once it is finished parsing but still loading sub-resources, and "complete" once it has loaded.
