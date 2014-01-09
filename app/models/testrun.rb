@@ -7,7 +7,7 @@ class Testrun < ActiveRecord::Base
     begin
       logger.warn 'start'
       logger.warn ['environment= ', ENV['RAILS_ENV']]
-      if ENV['RAILS_ENV'] == 'production'
+      if ENV['RAILS_ENV'].nil? || ENV['RAILS_ENV'] == 'production'
         logger.warn 'Headless started'
         headless = Headless.new
         headless.start
