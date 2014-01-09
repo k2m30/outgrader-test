@@ -48,10 +48,10 @@ namespace :deploy do
 
   desc 'Make sure local git is in sync with remote.'
   task :check_revision, roles: :web do
-    unless `git rev-parse HEAD` == `git rev-parse outgrader-test/master`
+    unless `git rev-parse HEAD` == `git rev-parse origin/master`
       puts 'WARNING: HEAD is not the same as outgrader-test/master'
       puts 'Run `git push` to sync changes.'
-      # exit #
+      exit
     end
   end
   before 'deploy', 'deploy:check_revision'
