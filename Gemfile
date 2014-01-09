@@ -40,6 +40,7 @@ end
 
 gem 'watir-webdriver'
 gem 'watir-webdriver-performance'
+gem 'headless'
 
 gem 'therubyracer'
 gem 'less-rails'
@@ -50,7 +51,10 @@ gem 'will_paginate', '~> 3.0'
 # gem 'bcrypt-ruby', '~> 3.1.2'
 
 # Use unicorn as the app server
-# gem 'unicorn'
+gem 'unicorn'
+gem 'rvm-capistrano'
+gem 'capistrano', '~> 2.15'
+gem 'whenever', :require => false
 
 # Use Capistrano for deployment
 # gem 'capistrano', group: :development

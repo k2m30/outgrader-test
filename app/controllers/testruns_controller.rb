@@ -15,10 +15,48 @@ class TestrunsController < ApplicationController
   def show
   end
 
+  def create_original_html
+    begin
+      if ENV['RAILS_ENV'] == 'production'
+        logger.warn 'Headless started'
+        headless = Headless.new
+        headless.start
+      end
+      profile = Selenium::WebDriver::Firefox::Profile.new
+      browser = Watir::Browser.new :firefox
+
+      pages = Page.where(original_html: nil).order(:url).limit(10)
+
+      pages.each do |page|
+        begin
+          p '----','going to visit ' + page.url
+          browser.goto page.url
+          page.original_html = browser.html
+          page.title = browser.title
+          page.save
+        rescue Exception => e
+        end
+
+      end
+      browser.close
+      if ENV['RAILS_ENV'] == 'production'
+        headless.destroy
+        logger.warn 'Headless destroyed'
+      end
+    rescue Exception => e
+    end
+    redirect_to testruns_path
+  end
   # GET /testruns/new
   def new
     begin
       p 'start'
+      if ENV['RAILS_ENV'] == 'production'
+        logger.warn 'Headless started'
+        headless = Headless.new
+        headless.start
+      end
+      
       profile = Selenium::WebDriver::Firefox::Profile.new
       profile.proxy = Selenium::WebDriver::Proxy.new :http => '93.125.42.249:8888', :ssl => '93.125.42.249:8888'
       browser = Watir::Browser.new :firefox, :profile => profile
@@ -49,7 +87,7 @@ class TestrunsController < ApplicationController
           p '----','going to visit ' + page.url
           browser.goto page.url
 
-#Returns "loading" while the document is loading, "interactive" once it is finished parsing but still loading sub-resources, and "complete" once it has loaded.
+          #Returns "loading" while the document is loading, "interactive" once it is finished parsing but still loading sub-resources, and "complete" once it has loaded.
           case browser.ready_state
           when 'complete'
             passed+=1
@@ -67,15 +105,15 @@ class TestrunsController < ApplicationController
           end
           page.save
           # if browser.ready_state == 'complete'
-#             
-#             passed+=1
-#             page.status = 'succeed'
-#             page.save
-#           else
-#             failed+=1
-#             page.status = browser.ready_state
-#             page.save
-#           end
+          #
+          #             passed+=1
+          #             page.status = 'succeed'
+          #             page.save
+          #           else
+          #             failed+=1
+          #             page.status = browser.ready_state
+          #             page.save
+          #           end
           p [passed+failed, 'visited ', page.url]
         rescue Exception => e
           failed+=1
@@ -98,6 +136,11 @@ class TestrunsController < ApplicationController
       end
       testrun.save
       browser.close
+      if ENV['RAILS_ENV'] == 'production'
+        headless.destroy
+        logger.warn 'Headless destroyed'
+      end
+      
       p 'finish'
       redirect_to testruns_path, success: 'Testrun succesful'
     rescue Exception => e
@@ -105,6 +148,10 @@ class TestrunsController < ApplicationController
       testrun.failed = failed
       testrun.status = 'failed'
       testrun.save
+      if ENV['RAILS_ENV'] == 'production'
+        headless.destroy
+        logger.warn 'Headless destroyed'
+      end      
       redirect_to testruns_path, alert: 'Testrun failed'
     end
 

@@ -1,10 +1,19 @@
 OutgraderTest::Application.routes.draw do
-  resources :testruns
+  resources :testruns do
+    collection do
+      get 'get_html' => 'testruns#create_original_html'
+    end
+    
+  end
 
   resources :pages do
     collection do
       get 'import' => 'pages#import'
       post 'import' => 'pages#upload'    
+    end
+    
+    member do
+      get 'show_original_html' => 'pages#show_original_html'
     end
   end
 

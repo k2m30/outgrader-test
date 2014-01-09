@@ -2,7 +2,7 @@ require "nokogiri"
 require "pp"
 
 class PagesController < ApplicationController
-  before_action :set_page, only: [:show, :edit, :update, :destroy]
+  before_action :set_page, only: [:show, :edit, :update, :destroy, :show_original_html]
 
   def import
   end
@@ -49,16 +49,21 @@ class PagesController < ApplicationController
     else
       pages = Page.all.order(:url)
     end
-    @pages = pages.paginate(:page => params[:page], :per_page => 30)
+    @pages = pages.paginate(:page => params[:page], :per_page => 20)
     respond_to do |format|
       format.html
       format.csv { send_data pages.to_csv }
+      format.json {render json: pages.pluck(:id, :url).to_json}
     end
   end
 
   # GET /pages/1
   # GET /pages/1.json
   def show
+  end
+  
+  def show_original_html
+    render text: @page.original_html
   end
 
   # GET /pages/new

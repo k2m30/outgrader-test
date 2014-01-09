@@ -33,8 +33,15 @@ GEM
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
     builder (3.1.4)
+    capistrano (2.15.5)
+      highline
+      net-scp (>= 1.0.0)
+      net-sftp (>= 2.0.0)
+      net-ssh (>= 2.0.14)
+      net-ssh-gateway (>= 1.1.0)
     childprocess (0.3.9)
       ffi (~> 1.0, >= 1.0.11)
+    chronic (0.10.2)
     coderay (1.1.0)
     coffee-rails (4.0.1)
       coffee-script (>= 2.2.0)
@@ -48,6 +55,8 @@ GEM
     erubis (2.7.0)
     execjs (2.0.2)
     ffi (1.9.3)
+    headless (1.0.1)
+    highline (1.6.20)
     hike (1.2.3)
     i18n (0.6.9)
     jbuilder (1.5.3)
@@ -57,6 +66,7 @@ GEM
       railties (>= 3.0, < 5.0)
       thor (>= 0.14, < 2.0)
     json (1.8.1)
+    kgio (2.8.1)
     less (2.4.0)
       commonjs (~> 0.2.7)
     less-rails (2.4.2)
@@ -70,6 +80,13 @@ GEM
     mini_portile (0.5.2)
     minitest (4.7.5)
     multi_json (1.8.2)
+    net-scp (1.1.2)
+      net-ssh (>= 2.6.5)
+    net-sftp (2.1.2)
+      net-ssh (>= 2.6.5)
+    net-ssh (2.7.0)
+    net-ssh-gateway (1.2.0)
+      net-ssh (>= 2.6.5)
     nokogiri (1.6.1)
       mini_portile (~> 0.5.0)
     pg (0.17.1)
@@ -90,11 +107,14 @@ GEM
       activesupport (= 4.0.2)
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
+    raindrops (0.12.0)
     rake (10.1.1)
     rdoc (3.12.2)
       json (~> 1.4)
     ref (1.0.5)
     rubyzip (1.1.0)
+    rvm-capistrano (1.5.1)
+      capistrano (~> 2.15.4)
     sass (3.2.13)
     sass-rails (4.0.1)
       railties (>= 4.0.0, < 5.0)
@@ -138,12 +158,19 @@ GEM
     uglifier (2.4.0)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
+    unicorn (4.7.0)
+      kgio (~> 2.6)
+      rack
+      raindrops (~> 0.7)
     watir-webdriver (0.6.4)
       selenium-webdriver (>= 2.18.0)
     watir-webdriver-performance (0.2.2)
       watir-webdriver
       watir-webdriver
     websocket (1.0.7)
+    whenever (0.8.4)
+      activesupport (>= 2.3.4)
+      chronic (>= 0.6.3)
     will_paginate (3.0.5)
 
 PLATFORMS
@@ -152,19 +179,24 @@ PLATFORMS
 DEPENDENCIES
   better_errors
   binding_of_caller
+  capistrano (~> 2.15)
   coffee-rails (~> 4.0.0)
+  headless
   jbuilder (~> 1.2)
   jquery-rails
   less-rails
   nokogiri
   pg
   rails (= 4.0.2)
+  rvm-capistrano
   sass-rails (~> 4.0.0)
   sdoc
   therubyracer
   turbolinks
   twitter-bootstrap-rails
   uglifier (>= 1.3.0)
+  unicorn
   watir-webdriver
   watir-webdriver-performance
+  whenever
   will_paginate (~> 3.0)
