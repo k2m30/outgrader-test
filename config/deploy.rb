@@ -29,7 +29,6 @@ namespace :deploy do
     desc "#{command} unicorn server"
     task command, roles: :app, except: {no_release: true} do
       run "/etc/init.d/unicorn_#{application} #{command}"
-      run "RAILS_ENV=production #{current_path}/bin/delayed_job #{command}"
     end
   end
 
