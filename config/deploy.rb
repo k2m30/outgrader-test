@@ -9,7 +9,7 @@ set :application, 'outgrader'
 set :user, 'ubuntu'
 set :deploy_to, "/home/#{user}/apps/#{application}"
 set :deploy_via, :remote_cache
-set :use_sudo, true
+set :use_sudo, false
 
 set :scm, 'git'
 set :repository, 'https://github.com/k2m30/outgrader-test'
