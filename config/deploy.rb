@@ -4,7 +4,7 @@ server '54.235.42.205', :web, :app, :db, primary: true
 #server '78.47.161.129', :web, :app, :db, primary: true #production
 
 set :whenever_command, 'bundle exec whenever'
-require 'whenever/capistrano'
+# require 'whenever/capistrano'
 set :application, 'outgrader'
 set :user, 'ubuntu'
 set :deploy_to, "/home/#{user}/apps/#{application}"
