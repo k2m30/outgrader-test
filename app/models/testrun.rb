@@ -6,6 +6,7 @@ class Testrun < ActiveRecord::Base
   def self.new_testrun(pages_id)
     begin
       logger.warn 'start'
+      logger.warn ['environment= ', ENV['RAILS_ENV']]
       if ENV['RAILS_ENV'] == 'production'
         logger.warn 'Headless started'
         headless = Headless.new
