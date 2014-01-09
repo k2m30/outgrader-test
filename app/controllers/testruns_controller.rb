@@ -18,7 +18,7 @@ class TestrunsController < ApplicationController
 
   def create_original_html
     Rails.logger.level = 3
-    Page.first.html
+    Page.html
     redirect_to testruns_path
   end
   # GET /testruns/new

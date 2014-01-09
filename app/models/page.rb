@@ -1,3 +1,6 @@
+require 'watir-webdriver-performance'
+require 'watir-webdriver'
+require 'headless'
 require 'csv'
 
 class Page < ActiveRecord::Base
@@ -11,7 +14,6 @@ class Page < ActiveRecord::Base
   end
 
   def self.html
-    begin
       logger.warn ['Environment ', ENV['RAILS_ENV']]
       if ENV['RAILS_ENV'] == 'production'
         logger.warn 'Headless'
@@ -42,9 +44,6 @@ class Page < ActiveRecord::Base
         headless.destroy
         logger.warn 'Headless destroyed'
       end
-    # rescue Exception => e
-#       logger.warn e.inspect
-    end
   end
 
 end
