@@ -15,6 +15,8 @@ class Testrun < ActiveRecord::Base
 
       profile = Selenium::WebDriver::Firefox::Profile.new
       profile.proxy = Selenium::WebDriver::Proxy.new :http => '93.125.42.249:8888', :ssl => '93.125.42.249:8888'
+      profile['browser.cache.memory.enable']=false
+      profile['browser.sessionhistory.max_total_viewers']=1
       browser = Watir::Browser.new :firefox, :profile => profile
 
       logger.warn 'browser is started'

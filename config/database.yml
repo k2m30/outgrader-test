@@ -14,13 +14,24 @@
 # Configure Using Gemfile
 # gem 'pg'
 #
+# development:
+#   adapter: postgresql
+#   encoding: unicode
+#   database: outgrader_development
+#   pool: 5
+#   username: outgrader
+#   password: 12345678
+
 development:
   adapter: postgresql
   encoding: unicode
-  database: outgrader_development
+  database: outgrader_production
+  port: 5432
   pool: 5
+  host: 54.235.42.205
   username: outgrader
   password: 12345678
+
 
 production:
   adapter: postgresql
