@@ -110,7 +110,7 @@ class PagesController < ApplicationController
   def destroy
     @page.destroy
     respond_to do |format|
-      format.html { redirect_to pages_url }
+      format.html { redirect_to pages_path(page: params[:page], type: params[:type]) }
       format.json { head :no_content }
     end
   end

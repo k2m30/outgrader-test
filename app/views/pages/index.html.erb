@@ -24,7 +24,7 @@
           <%= link_to t('.edit', :default => t("helpers.links.edit")),
                       edit_page_path(page) %>
           <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-                      page_path(page),
+                      page_path(page, page: params[:page], type: params[:type]),
                       :method => :delete %>
                       <%= link_to 'Retest', new_testrun_path(type: 'single_page', id: page.id) %>
         </td>
